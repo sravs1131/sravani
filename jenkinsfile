@@ -1,2 +1,63 @@
+pipeline {
+    agent any
 
-Pipeline test
+    stages {
+        stage('Compile') {
+            steps {
+                echo "Compiling the Code.........."
+                bat "mvn compile"
+            }
+        }
+        stage('Testing') {
+            steps {
+                echo "Testing the Code.........."
+                bat "mvn test"
+            }
+        }
+        stage('Packaging') {
+            steps {
+                echo "Packaging the Code.........."
+                bat "mvn package" 
+            }
+        }
+       stage('Install') {
+            steps {
+                echo "Installing the Code.........."
+                bat "mvn install" 
+            }
+        }
+    }
+}
+
+
+Eg2:-
+-----
+pipeline {
+    agent  {
+       node  {
+          label "mygroup"
+          customworkspace "A:\sam/PIPE"
+       }
+   }
+   triggers {
+      cron('* * * * *')
+   }
+   stages {
+       stage('stage1') {
+           steps {
+              echo 'hello welcome to groovy script stage I'
+           }
+       }
+       stage('stage2') {
+           steps {
+              echo 'hello welcome to groovy script stage II'
+           }
+       }
+       
+   }
+   post {
+           always {
+               echo 'End of groovy script pipeline'
+           }
+       }
+}
